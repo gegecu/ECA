@@ -295,6 +295,18 @@ public class ITSController extends Thread implements ActionListener, MouseListen
                 int isCorrect=quizWindow.checkForAnswer();
                 feedbackWindow=new FeedbackWindow(this, isCorrect, currentUser.getName());
                 feedbackWindow.initialize();
+                
+                if(quizWindow.endQuestions() && isCorrect == 1) {
+                    quizWindow.close();
+                    feedbackWindow.close();
+                    ArrayList<StoryProfile> allStories = storyLibraryDB.getAllStoryProfiles();
+                    if (allStories!=null || allStories.isEmpty())
+                    {
+                        libraryWindow=new LibraryWindow(this, currentUser, allStories);
+                        libraryWindow.initialize();
+                    }
+                }
+                
             }
             else 
                 if (source.equals((quizWindow.selfReportingPanel).happyPanel) || 
@@ -331,8 +343,14 @@ public class ITSController extends Thread implements ActionListener, MouseListen
                 JPanel panel=(JPanel)source;
                 chatWindow.replyDialoguePanel.selfReportingPanel.setBorder(panel);
                 currentEmotionalState=chatWindow.replyDialoguePanel.selfReportingPanel.getEmotionalState(panel);
-            
+                
                 System.out.println("Current emotional state: " + (currentEmotionalState?"happy": "sad"));
+                
+                if(currentEmotionalState) {
+                     chatWindow.close();
+                     quizWindow.resume();
+                    
+                }//
             }
         }
     }
