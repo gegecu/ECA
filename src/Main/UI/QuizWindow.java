@@ -146,6 +146,10 @@ public class QuizWindow extends javax.swing.JFrame{
         return -1;
     }
     
+    public boolean endQuestions() {
+        return questionNumber == questions.size();
+    }
+    
     public void suspend()
     {
         this.setVisible(false);
