@@ -258,8 +258,13 @@ public class ITSController extends Thread implements ActionListener, MouseListen
                         waitWindow.close();
                         waitWindow=null;
                         
-                        chatWindow=new ChatWindow(this, currentUser, currentAgent);
-                        chatWindow.initialize(dialogue);
+                        if(dialogue != null) {
+                            chatWindow=new ChatWindow(this, currentUser, currentAgent);
+                            chatWindow.initialize(dialogue);
+                        }
+                        else {
+                            quizWindow.resume();
+                        }
                     }
                 }      
             }
@@ -294,11 +299,11 @@ public class ITSController extends Thread implements ActionListener, MouseListen
             {
                 int isCorrect=quizWindow.checkForAnswer();
                 feedbackWindow=new FeedbackWindow(this, isCorrect, currentUser.getName());
-                feedbackWindow.initialize();
+                
                 
                 if(quizWindow.endQuestions() && isCorrect == 1) {
                     quizWindow.close();
-                    feedbackWindow.close();
+                    //feedbackWindow.close();
                     ArrayList<StoryProfile> allStories = storyLibraryDB.getAllStoryProfiles();
                     if (allStories!=null || allStories.isEmpty())
                     {
@@ -306,6 +311,7 @@ public class ITSController extends Thread implements ActionListener, MouseListen
                         libraryWindow.initialize();
                     }
                 }
+                feedbackWindow.initialize();
                 
             }
             else 
@@ -335,7 +341,13 @@ public class ITSController extends Thread implements ActionListener, MouseListen
             {
                 JsonObject selectedReply=chatWindow.getSelectedReply();
                 JsonObject dialogue=dialogueController.generateDialogue(selectedReply, currentEmotionalState);
-                chatWindow.setDialogue(dialogue);
+                if(dialogue != null) {
+                    chatWindow.setDialogue(dialogue);
+                }
+                else {
+                    chatWindow.close();
+                    quizWindow.resume();
+                }
             }  
             else if (source.equals(chatWindow.replyDialoguePanel.selfReportingPanel.happyPanel) ||
                     source.equals(chatWindow.replyDialoguePanel.selfReportingPanel.sadPanel))

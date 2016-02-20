@@ -69,6 +69,7 @@ public class ReplyDialoguePanel extends JPanel {
     public JsonObject getSelectedReply()
     {
         int row=tblChoices.getSelectedRow();
+        System.out.println(row);
         return tableModel.getValueOfSelectedRow(row);
     }
 
