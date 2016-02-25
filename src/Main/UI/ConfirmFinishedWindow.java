@@ -11,7 +11,7 @@ import Main.ITSController;
  *
  * @author crimsiris
  */
-public class ConfirmFinishedWindow extends javax.swing.JFrame {
+public class ConfirmFinishedWindow extends javax.swing.JDialog {
 
     private final int ICON_WIDTH=80;
     
@@ -24,8 +24,8 @@ public class ConfirmFinishedWindow extends javax.swing.JFrame {
      */
     public ConfirmFinishedWindow(ITSController controller, Story story) 
     {
+        setModal(true);
         initComponents();
-        
         initializeComponents(controller, story);
     }
     

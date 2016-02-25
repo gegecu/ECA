@@ -11,7 +11,7 @@ import Main.ITSController;
  *
  * @author crimsiris
  */
-public class ConfirmReadWindow extends javax.swing.JFrame {
+public class ConfirmReadWindow extends javax.swing.JDialog {
 
     private final int ICON_WIDTH=80;
     
@@ -24,8 +24,8 @@ public class ConfirmReadWindow extends javax.swing.JFrame {
      */
     public ConfirmReadWindow(ITSController controller, StoryProfile story) 
     {
+        setModal(true);
         initComponents();
-        
         initializeComponents(controller, story);
     }
     

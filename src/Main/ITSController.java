@@ -13,12 +13,18 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.json.JsonValue;
 import javax.swing.JPanel;
+import javax.swing.SwingWorker;
 
 /*
  * To change this template, choose Tools | Templates
@@ -55,6 +61,9 @@ public class ITSController extends Thread implements ActionListener, MouseListen
     private ChatWindow chatWindow=null;
     private WaitWindow waitWindow=null;
     
+    private ITSController This;
+    private static JsonObject dialogue=null;
+                        
     
     public ITSController()
     {
@@ -75,6 +84,7 @@ public class ITSController extends Thread implements ActionListener, MouseListen
             loginWindow=new LoginWindow(this, allUsers);
             loginWindow.initialize();
         }
+        This = this;
     }
     
     private void instantiateAgent()
@@ -250,21 +260,37 @@ public class ITSController extends Thread implements ActionListener, MouseListen
                     {
                         instantiateAgent();
                         
-                        waitWindow=new WaitWindow(this, currentAgent.getName(), currentAgent.getGender());
+                        waitWindow=new WaitWindow(This, currentAgent.getName(), currentAgent.getGender());
                         waitWindow.initialize();
                         
-                        JsonObject dialogue=dialogueController.initiateDialogue(currentStory.getTopicConcepts(), currentEmotionalState);
+                        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+
+                            @Override
+                            public Void doInBackground() {
+                                dialogue=dialogueController.initiateDialogue(currentStory.getTopicConcepts(), currentEmotionalState);
+                                return null;
+                            }
+
+                            @Override
+                            public void done() {
+                                
+                                waitWindow.close();
+                                waitWindow=null;
+                                
+                                if(dialogue != null) {
+                                    chatWindow=new ChatWindow(This, currentUser, currentAgent);
+                                    chatWindow.initialize(dialogue);
+                                }
+                                else {
+                                    quizWindow.resume();
+                                }
                         
-                        waitWindow.close();
-                        waitWindow=null;
+                            }
+
+                        };
+
+                        worker.execute();
                         
-                        if(dialogue != null) {
-                            chatWindow=new ChatWindow(this, currentUser, currentAgent);
-                            chatWindow.initialize(dialogue);
-                        }
-                        else {
-                            quizWindow.resume();
-                        }
                     }
                 }      
             }
