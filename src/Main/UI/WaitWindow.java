@@ -104,12 +104,11 @@ public class WaitWindow extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         infoPanel = new Main.UI.Components.GeneralInfoPanel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(485, 222));
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(485, 222));
-        jPanel1.setSize(new java.awt.Dimension(485, 222));
 
         org.jdesktop.layout.GroupLayout jPanel1Layout = new org.jdesktop.layout.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
