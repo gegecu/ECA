@@ -123,13 +123,13 @@ public class StoryWindow extends javax.swing.JFrame {
         
         String id = pages.get(currentPage-1).getPageIllustrationID();
         
-        System.out.println("id: " + id);
+        if(Main.Debug.debug) System.out.println("id: " + id);
         if (id!=null && !id.isEmpty())
         {
             String path=pageIllustrations.get(id);
             if (path!=null && !id.isEmpty())
             {
-                System.out.println("path: " + path);
+                if(Main.Debug.debug) System.out.println("path: " + path);
                 illustrationPanel.setIllustration(path);
             }
             

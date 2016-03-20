@@ -36,9 +36,9 @@ public class ITSDatabaseAccess {
     
     private void instantiateDBConnectionParameters(int urlIndex)
     {
-        System.out.println("---------- Performing Database Operation ----------");
-        System.out.println("Operation: Read database connection parameters from database configuration file");
-        System.out.println("Status: Reading database configuration file");
+        if (Main.Debug.debugDatabase) System.out.println("---------- Performing Database Operation ----------");
+        if (Main.Debug.debugDatabase) System.out.println("Operation: Read database connection parameters from database configuration file");
+        if (Main.Debug.debugDatabase) System.out.println("Status: Reading database configuration file");
         
         File dbConfigFile= new File(DB_CONFIG_FILE_PATH);
         
@@ -52,57 +52,57 @@ public class ITSDatabaseAccess {
                 String[] split=temp.split(URL_DELIM);
                 
                 url=split[urlIndex];
-                System.out.println("URL: " + url);
+                if (Main.Debug.debugDatabase) System.out.println("URL: " + url);
                 
                 if (scanner.hasNextLine())
                 {
                     username=scanner.nextLine();
-                    System.out.println("Username: " + username);
+                    if (Main.Debug.debugDatabase) System.out.println("Username: " + username);
                     
                     if (scanner.hasNextLine())
                     {
                         password=scanner.nextLine();
-                        System.out.println("Password: " + password);
+                        if (Main.Debug.debugDatabase) System.out.println("Password: " + password);
                     }
                 }
             }           
         }
         catch (FileNotFoundException fnfe)
         {
-            System.out.println("Error: DB.conf cannot be found in the specified file path");
-            System.out.println(fnfe);
+            if (Main.Debug.debugDatabase) System.out.println("Error: DB.conf cannot be found in the specified file path");
+            if (Main.Debug.debugDatabase) System.out.println(fnfe);
         }
         
-        System.out.println("------------ End of Database Operation ------------\n\n");
+        if (Main.Debug.debugDatabase) System.out.println("------------ End of Database Operation ------------\n\n");
     }
     
     public Connection connect()
     {
         if (!url.isEmpty() && !username.isEmpty() && !password.isEmpty())
         {
-            System.out.println("Status: Initiating connection to database");
+            if (Main.Debug.debugDatabase) System.out.println("Status: Initiating connection to database");
             try 
             {
                 Class.forName(JDBC_FILE_PATH);
                 connection = DriverManager.getConnection(url, username, password);
 
-                System.out.println("Status: Successfully connected to the database!");
+                if (Main.Debug.debugDatabase) System.out.println("Status: Successfully connected to the database!");
 
             } 
             catch (ClassNotFoundException cnfe) 
             {
-                System.out.println("Error: JDBC can't be found");
-                System.out.println(cnfe);
+                if (Main.Debug.debugDatabase) System.out.println("Error: JDBC can't be found");
+                if (Main.Debug.debugDatabase) System.out.println(cnfe);
             }
             catch (SQLException sqle) 
             {
-                System.out.println("Error: Error with SQL");
-                System.out.println(sqle);
+                if (Main.Debug.debugDatabase) System.out.println("Error: Error with SQL");
+                if (Main.Debug.debugDatabase) System.out.println(sqle);
             }
         }
         else
         {
-            System.out.println("Error: Error with contents of DB.conf");
+            if (Main.Debug.debugDatabase) System.out.println("Error: Error with contents of DB.conf");
         }
         
         return connection;
@@ -115,13 +115,13 @@ public class ITSDatabaseAccess {
             if (connection!=null)
             {
                 connection.close();
-                System.out.println("Status: Successfully disconnected from the database!");
+                if (Main.Debug.debugDatabase) System.out.println("Status: Successfully disconnected from the database!");
             }
         }
         catch(Exception e)
         {
-            System.out.println("Error: Error in disconnecting from the database");
-            System.out.println(e);
+            if (Main.Debug.debugDatabase) System.out.println("Error: Error in disconnecting from the database");
+            if (Main.Debug.debugDatabase) System.out.println(e);
             return false;
         }
     

@@ -30,7 +30,7 @@ public class Reader {
 
         try
         {
-            System.out.println(path);
+            if (Main.Debug.debug) System.out.println(path);
             
             br=new BufferedReader(new FileReader(path));
             

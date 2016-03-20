@@ -71,9 +71,7 @@ public class ITSController extends Thread implements ActionListener, MouseListen
         allUsers=userInformationDB.getAllUsers();
         
         imageLibraryDB=new ImageLibraryDatabase();
-        
-        dialogueController=new Main.DialogueController();
-                              
+                    
         if (allUsers==null || allUsers.isEmpty())
         {
             signupWindow=new SignupWindow(this, imageLibraryDB.getAllAvatars());
@@ -309,8 +307,10 @@ public class ITSController extends Thread implements ActionListener, MouseListen
             if (source.equals(libraryWindow.tblStories))
             {
                 StoryProfile story=libraryWindow.getSelectedStory();
-                System.out.println("Selected story: " + story.getTitle());
+                if (Main.Debug.debug) System.out.println("Selected story: " + story.getTitle());
                 
+                dialogueController=new Main.DialogueController();
+                  
                 if (story!=null)
                 {
                     confirmReadWindow=new ConfirmReadWindow(this, story);
@@ -382,7 +382,7 @@ public class ITSController extends Thread implements ActionListener, MouseListen
                 chatWindow.replyDialoguePanel.selfReportingPanel.setBorder(panel);
                 currentEmotionalState=chatWindow.replyDialoguePanel.selfReportingPanel.getEmotionalState(panel);
                 
-                System.out.println("Current emotional state: " + (currentEmotionalState?"happy": "sad"));
+                if (Main.Debug.debug) System.out.println("Current emotional state: " + (currentEmotionalState?"happy": "sad"));
                 
                 if(currentEmotionalState) {
                      chatWindow.close();
@@ -396,6 +396,9 @@ public class ITSController extends Thread implements ActionListener, MouseListen
 
     public static void main (String[] args)
     {
+        Main.Debug.debug = false;
+        Main.Debug.debugDatabase = false;
+        Main.Debug.debugMove = false;
         new ITSController();
     }
 

@@ -46,7 +46,7 @@ public class PageIllustrationPanel extends javax.swing.JPanel {
         {
             illustration=null;
             this.setBackground(Color.WHITE);
-            System.out.println("error");
+            if (Main.Debug.debug) System.out.println("error");
         }
     }
     
